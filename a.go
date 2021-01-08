@@ -178,20 +178,25 @@ func main() {
 		panic(err)
 	}
 
-	var vao uint32
-	gl.GenVertexArrays(1, &vao)
-	gl.BindVertexArray(vao)
-
 	var vbo uint32
 	gl.GenBuffers(1, &vbo)
 	fmt.Printf("vbo=%v\n", vbo)
 	gl.BindBuffer(gl.ARRAY_BUFFER, vbo)
 	gl.BufferData(gl.ARRAY_BUFFER, len(triVertices)*4, gl.Ptr(triVertices), gl.STATIC_DRAW)
+	// gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+
+	var vao uint32
+	gl.GenVertexArrays(1, &vao)
+	gl.BindVertexArray(vao)
 
 	vertAttrib := uint32(gl.GetAttribLocation(program, gl.Str("a_position\x00")))
 	fmt.Printf("vertAttrib=%v\n", vertAttrib)
-	gl.EnableVertexAttribArray(vertAttrib)
+
+	gl.BindBuffer(gl.ARRAY_BUFFER, vbo)
 	gl.VertexAttribPointer(vertAttrib, 2, gl.FLOAT, false, 2*4, gl.PtrOffset(0))
+	gl.EnableVertexAttribArray(vertAttrib)
+	// gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+	// gl.BindVertexArray(0)
 
 	// gl.ClearColor(.2, 0., 0., 0.5)
 	gl.ClearColor(0., 0., 0.2, 1.)
@@ -202,6 +207,7 @@ func main() {
 		gl.UseProgram(program)
 		gl.BindVertexArray(vao)
 		gl.DrawArrays(gl.TRIANGLES, 0, 3)
+		// gl.DrawArrays(gl.LINE_STRIP, 0, 3)
 
 		// Do OpenGL stuff.
 		window.SwapBuffers()
