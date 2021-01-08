@@ -34,6 +34,7 @@ var fshader2 = `
   }
 `
 
+// https://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html
 var vshader3 = `#version 300 es
 precision highp float;
 
@@ -60,6 +61,7 @@ void main() {
 }
 `
 
+// https://github.com/go-gl/example/blob/master/gl41core-cube/cube.go
 func compileShader(source string, shaderType uint32) (uint32, error) {
 	shader := gl.CreateShader(shaderType)
 
